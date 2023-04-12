@@ -7,5 +7,6 @@ class App_tasques():
     def afegeix_tasca(self, tasca_nova):
         self._llista.append(tasca_nova)
 
+
     def llegir_tasques(self):
         return self._llista
