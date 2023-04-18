@@ -11,6 +11,11 @@ class App_tasques():
         tasca_nova.persistencia = self._persistencia_tasques
         tasca_nova.desa()
 
-
     def llegir_tasques(self):
         return self._persistencia_tasques.get_list()
+    
+    def modifica_tasca(self, tasca):
+        return self._persistencia_tasques.modifica_tasca(tasca)
+    
+    def esborra_tasca(self, id):
+        return self._persistencia_tasques.esborra_tasca(id)
