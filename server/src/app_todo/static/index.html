@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .el_meu_p:hover {
+            background-color: blueviolet;
+            font-family: Impact;
+        }
+    </style>
+    <script>
+        function llegeix_tasques(){
+            fetch("http://localhost:5000/tasks", {
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Success:", data);
+                    window.tasques = data;
+                    //mostrar_tasques_locals();
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+</head>
+<body onload="llegeix_tasques()">
+    <form><input type="text" placeholder="escriu aquí el teu nom"  /> </form>
+    <p class="el_meu_p" id="p_salut">
+Hola
+    </p>
+    <p class="el_meu_p">
+Adeu
+    </p>
+    <p>Com estàs?</p>
+</body>
+</html>
