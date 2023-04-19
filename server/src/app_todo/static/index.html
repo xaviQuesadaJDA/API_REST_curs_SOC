@@ -29,9 +29,15 @@
                     console.error("Error:", error);
                 });
         }
+
+        function escriu_llista(){
+            la_meva_llista = document.getElementById("llista");
+            la_meva_llista.innerText = "Hola món!";
+        }
     </script>
 </head>
 <body onload="llegeix_tasques()">
+    <div id="llista"></div>
     <form><input type="text" placeholder="escriu aquí el teu nom"  /> </form>
     <p class="el_meu_p" id="p_salut">
 Hola
@@ -39,6 +45,6 @@ Hola
     <p class="el_meu_p">
 Adeu
     </p>
-    <p>Com estàs?</p>
+    <p onclick="escriu_llista()">Com estàs?</p>
 </body>
 </html>
