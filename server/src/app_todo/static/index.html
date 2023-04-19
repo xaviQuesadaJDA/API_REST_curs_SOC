@@ -22,29 +22,33 @@
                 .then((response) => response.json())
                 .then((data) => {
                     console.log("Success:", data);
-                    window.tasques = data;
-                    //mostrar_tasques_locals();
+                    tasques = data;
+                    tasques.forEach((item) => {
+                        escriu_llista(item["titol"]);
+                    });
                 })
                 .catch((error) => {
                     console.error("Error:", error);
                 });
         }
 
-        function escriu_llista(){
+        function escriu_llista(text_a_escriure){
             la_meva_llista = document.getElementById("llista");
-            la_meva_llista.innerText = "Hola món!";
+            un_parragraf = document.createElement("p");
+            la_meva_llista.appendChild(un_parragraf);
+            un_parragraf.innerText = text_a_escriure;
         }
     </script>
 </head>
 <body onload="llegeix_tasques()">
     <div id="llista"></div>
     <form><input type="text" placeholder="escriu aquí el teu nom"  /> </form>
-    <p class="el_meu_p" id="p_salut">
+    <p class="el_meu_p" id="p_salut"  onclick="escriu_llista('Hola Món!')">
 Hola
     </p>
     <p class="el_meu_p">
 Adeu
     </p>
-    <p onclick="escriu_llista()">Com estàs?</p>
+    <p onclick="escriu_llista('Adeu Món!')">Com estàs?</p>
 </body>
 </html>
