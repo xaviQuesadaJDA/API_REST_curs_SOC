@@ -24,7 +24,11 @@
                     console.log("Success:", data);
                     tasques = data;
                     tasques.forEach((item) => {
-                        escriu_llista(item["titol"]);
+                        esta_hecha = "💩";
+                        if (item["done"]){
+                            esta_hecha = "😎";
+                        }
+                        escriu_llista(item["titol"] + " " + esta_hecha);
                     });
                 })
                 .catch((error) => {
