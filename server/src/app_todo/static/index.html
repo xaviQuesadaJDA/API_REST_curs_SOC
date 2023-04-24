@@ -16,6 +16,7 @@
     </style>
     <script>
         function llegeix_tasques(){
+            host = window.location.protocol.concat("//").concat(window.location.host);
             fetch("http://localhost:5000/tasks", {
                     method: 'GET'
                 })
