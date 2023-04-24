@@ -6,35 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        * {
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .el_meu_p:hover {
-            background-color: blueviolet;
-            font-family: Impact;
-        }
+        
     </style>
     <script>
         function llegeix_tasques(){
             host = window.location.protocol.concat("//").concat(window.location.host);
-            fetch("http://localhost:5000/tasks", {
+            console.log(host)
+            fetch(host.concat("/tasks"), {
                     method: 'GET'
                 })
                 .then((response) => response.json())
                 .then((data) => {
                     console.log("Success:", data);
                     tasques = data;
+                    neteja_tasques();
                     tasques.forEach((item) => {
                         esta_hecha = "💩";
                         if (item["done"]){
                             esta_hecha = "😎";
                         }
-                        escriu_llista(item["titol"] + " " + esta_hecha);
+                        escriu_llista(item["id"] + " " + item["titol"] + " " + esta_hecha);
                     });
                 })
                 .catch((error) => {
                     console.error("Error:", error);
                 });
+        }
+
+        function nova_tasca(){
+            host = window.location.protocol.concat("//").concat(window.location.host);
+            console.log(host)
+            titol = document.getElementById("titol_tasca").value;
+            info_body = {"title": titol};
+            fetch(host.concat("/tasks"), {
+                    method: 'POST',
+                    body: JSON.stringify(info_body),
+                    headers:{"content-type": "application/json"}
+                })
+                .then((response) => llegeix_tasques())
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+
+        function neteja_tasques(){
+            la_meva_llista = document.getElementById("llista");
+            la_meva_llista.innerHTML = "";
         }
 
         function escriu_llista(text_a_escriure){
@@ -47,13 +64,9 @@
 </head>
 <body onload="llegeix_tasques()">
     <div id="llista"></div>
-    <form><input type="text" placeholder="escriu aquí el teu nom"  /> </form>
-    <p class="el_meu_p" id="p_salut"  onclick="escriu_llista('Hola Món!')">
-Hola
-    </p>
-    <p class="el_meu_p">
-Adeu
-    </p>
-    <p onclick="escriu_llista('Adeu Món!')">Com estàs?</p>
+    <form>
+        <input id ="titol_tasca" type="text" placeholder="escriu aquí el titol de la nova tasca"  /> 
+        <input onclick="nova_tasca()" type="button" value="Nova tasca" />
+    </form>
 </body>
 </html>
