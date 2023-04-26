@@ -26,7 +26,7 @@ class Persistencia_usuari_mysql():
         resultat = None
         consulta = "INSERT INTO usuaris " \
                     + "(nom, nick, password_hash)" \
-                    + f"VALUES('{nom}', '{nick}', '{password_hash}');"
+                    + f"VALUES('{nom}', '{nick}', '{password_hash.decode()}');"
         cursor = self._conn.cursor(buffered=True)
         try:
             cursor.execute(consulta)
@@ -39,55 +39,14 @@ class Persistencia_usuari_mysql():
         cursor.close()
         return resultat
     
-    def calcula_hash(password):
+    def calcula_hash(self, password):
         bytes = password.encode('utf-8')
         sal = bcrypt.gensalt()
         hash = bcrypt.hashpw(bytes, sal)
         return hash
-    
-    def get_list(self):
-        
-        consulta = "SELECT titol, done, id FROM tasques;"
-        cursor = self._conn.cursor(buffered=True)
-        cursor.execute(consulta)
-        llista = cursor.fetchall()
-        resultat = []
-        for registre in llista:
-            tarea = tasca.Tasca(self, registre[0], registre[1], registre[2])
-            resultat.append(tarea)
-        cursor.reset()
-        cursor.close()
-        return resultat
-    
-    def modifica_tasca(self, tasca):
-        resultat = None
-        
-        titol = tasca.titol
-        done = tasca.done
-        id = tasca.id
-        consulta = f"update tasques set done={done}, titol='{titol}' where id={id};"
-        cursor = self._conn.cursor(buffered=True)
-        try:
-            cursor.execute(consulta)
-            resultat = tasca
-        except mysql.connector.errors.IntegrityError:
-            print("[X] IntegrityError: possiblement aquest titol ja existeix.")
-        self._conn.commit()
-        cursor.reset()
-        cursor.close()
-        return resultat
-    
-    def esborra_tasca(self, id):
-        
-        consulta = f"delete from tasques where id={id};"
-        cursor = self._conn.cursor(buffered=True)
-        cursor.execute(consulta)
-        self._conn.commit()
-        cursor.reset()
-        cursor.close()
 
     def existeixen_taules(self):
-        consulta_1 = "SELECT * FROM usuari LIMIT 1;"
+        consulta_1 = "SELECT * FROM usuaris LIMIT 1;"
         consulta_2 = "SELECT * FROM sessions LIMIT 1;"
         cursor_1 = self._conn.cursor(buffered=True)
         cursor_2 = self._conn.cursor(buffered=True)
@@ -133,28 +92,10 @@ class Persistencia_usuari_mysql():
 
 
 def main():
-    id = None
-    titol = "Fer la bugada"
-    persistencia = Persistencia_tasca_mysql()
-    una_tasca = tasca.Tasca(persistencia, titol)
-    print(persistencia.desa(una_tasca))
-    tasques = persistencia.get_list()
-    print("--- Lista de tasques: ---")
-    for taska in tasques:
-        print(taska)
-        if taska.titol == titol:
-            id = taska.id
-            taska.titol = "Refer la bugada"
-            taska.done = True
-            persistencia.modifica_tasca(taska)
-            print("--- Taska modificada ---")
-    tasques = persistencia.get_list()
-    print("\n\n--- Lista de tasques: ---")
-    for taska in tasques:
-        print(taska)
-    if id:
-        persistencia.esborra_tasca(id)
-        print("--- Taska esborrada ---")
+    nova_persistencia = Persistencia_usuari_mysql()
+    nou_usuari = usuari.Usuari(nova_persistencia, "Adelaida", "Adi", "1234")
+    print(nou_usuari.desa())
+
 
 if __name__=="__main__":
     main()

@@ -40,14 +40,18 @@ class Usuari():
     def done(self, valor):
         self._password = valor
 
-    def __init__(self, nom=None, nick=None, password=None, id=None):
+    def __init__(self, persistencia, nom=None, nick=None, password=None, id=None):
         self._nom = nom
         self._nick = nick
-        self._password
+        self._password = password
         self._id = id   
+        self._persistencia = persistencia
 
     def desa(self):
-        pass
+        resultat = self._persistencia.desa(self)
+        if resultat:
+            self._id = resultat.id
+        return resultat
 
     def __str__(self):
         resultat = {'id': self._id, 'nom': self._nom, 'nick': self._nick}
