@@ -2,7 +2,7 @@
 
 import flask
 import app_tasques
-import tasca
+import tasca, usuari
 import json
 
 app = flask.Flask(__name__)
@@ -38,6 +38,20 @@ def tasks():
             tasca_diccionary = json.loads(tasca_json)    # tasca_diccionary -> dictionary
             llista_jsons.append(tasca_diccionary)   # array de dictionaries
         return flask.jsonify(llista_jsons), 200     # retorna json + Content-type: application/json
+
+@app.route('/registre', methods=['POST'])
+def registre():
+    info_body = flask.request.get_data()    
+    usuari_nou = json.loads(info_body)      
+    objecte_usuari = usuari.Usuari(
+        None, usuari_nou["nom"], 
+        usuari_nou["nick"], 
+        usuari_nou["password"]
+        ) 
+    resultat = core_app.registre(objecte_usuari)
+    if resultat:
+        return "", 201
+    return "", 400
 
 app.run(
     host="0.0.0.0",
