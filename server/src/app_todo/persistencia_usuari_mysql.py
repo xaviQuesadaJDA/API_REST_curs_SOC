@@ -30,10 +30,10 @@ class Persistencia_usuari_mysql():
         cursor = self._conn.cursor(buffered=True)
         try:
             cursor.execute(consulta)
-            tasca.id = cursor.lastrowid
-            resultat = tasca
+            usuari.id = cursor.lastrowid
+            resultat = usuari
         except mysql.connector.errors.IntegrityError:
-            print("[X] IntegrityError: possiblement aquesta tasca ja està registrada.")
+            print("[X] IntegrityError: possiblement aquest usuari ja està registrat.")
         self._conn.commit()
         cursor.reset()
         cursor.close()
