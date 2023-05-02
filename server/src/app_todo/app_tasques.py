@@ -57,7 +57,9 @@ class App_tasques():
     def login(self, nick, password):
         usuari_passat_pel_client = usuari.Usuari(self._persistencia_usuaris, None, nick, password)
         usuari_de_base_dades = usuari_passat_pel_client.llegeix_amb_nick()
-        comparacio = bcrypt.checkpw(password.encode('utf-8'), usuari_de_base_dades.password)
+        comparacio = bcrypt.checkpw(
+            password.encode('utf-8'), 
+            usuari_de_base_dades.password.encode('utf-8'))
         if comparacio:
             api_key = uuid.uuid4()
             # TODO desar api_key a la base de dades
