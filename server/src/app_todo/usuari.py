@@ -37,7 +37,7 @@ class Usuari():
         return self._password      
 
     @password.setter
-    def done(self, valor):
+    def password(self, valor):
         self._password = valor
 
     def __init__(self, persistencia, nom=None, nick=None, password=None, id=None):
@@ -51,6 +51,10 @@ class Usuari():
         resultat = self._persistencia.desa(self)
         if resultat:
             self._id = resultat.id
+        return resultat
+    
+    def llegeix_amb_nick(self):
+        resultat = self._persistencia.llegeix_amb_nick(self._nick)
         return resultat
 
     def __str__(self):
