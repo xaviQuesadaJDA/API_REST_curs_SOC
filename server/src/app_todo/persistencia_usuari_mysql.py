@@ -117,6 +117,18 @@ class Persistencia_usuari_mysql():
         self._conn.commit()
         cursor.reset()
         cursor.close()
+        
+    def llegeix_usuari_amb_api_key(self, x_api_key):
+        consulta = f"select usuaris.id, nom, nick, password_hash, api_key from sessions, usuaris where sessions.usuari = usuaris.id and api_key='{x_api_key}';"
+        cursor = self._conn.cursor(buffered=True)
+        nou_usuari = None
+        cursor.execute(consulta)
+        dades = cursor.fetchone()
+        cursor.reset()
+        cursor.close()
+        if dades:
+            nou_usuari = usuari.Usuari(self, dades[1], dades[2], dades[3], dades[0])
+        return nou_usuari
 
 
 def main():
