@@ -56,6 +56,10 @@ class Usuari():
     def llegeix_amb_nick(self):
         resultat = self._persistencia.llegeix_amb_nick(self._nick)
         return resultat
+    
+    def desa_api_key(self, api_key):
+        resultat = self._persistencia.desa_api_key(self, api_key)
+        return resultat
 
     def __str__(self):
         resultat = {'id': self._id, 'nom': self._nom, 'nick': self._nick}

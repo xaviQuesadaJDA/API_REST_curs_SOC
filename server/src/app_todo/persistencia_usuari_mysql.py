@@ -56,6 +56,22 @@ class Persistencia_usuari_mysql():
         sal = bcrypt.gensalt()
         hash = bcrypt.hashpw(bytes, sal)
         return hash
+    
+    def desa_api_key(self, usuari, api_key):
+        resultat = None
+        consulta = f"INSERT INTO sessions (usuari, api_key) VALUES({usuari.id}, '{api_key}');"
+        cursor = self._conn.cursor(buffered=True)
+        try:
+            cursor.execute(consulta)
+            self._conn.commit()
+            resultat = True
+        except:
+            print("[X] No hem pogut inserir la API key a la base de dades;")
+            resultat = False
+        cursor.reset()
+        cursor.close()
+        return resultat
+        
 
     def existeixen_taules(self):
         consulta_1 = "SELECT * FROM usuaris LIMIT 1;"
