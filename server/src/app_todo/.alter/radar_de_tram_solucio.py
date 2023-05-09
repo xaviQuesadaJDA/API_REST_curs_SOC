@@ -31,20 +31,23 @@ app = flask.Flask(__name__)
 
 @app.route('/es-sancionable/distancia/<d>/temps/<t>/v-max/<vm>', methods=['GET'])
 def es_sancionable(d, t, vm):
+    distancia = int(d)
+    temps = int(t)
     v_max = int(vm)
-    missatge = ""
-    velocitat_real = (int(d) / 1000) / (int(t) / (60 * 60))
+
+    velocitat_real = (distancia / 1000) / (temps / (60 * 60))
+    missatge = None
     if velocitat_real <= v_max:
-        missatge = 'No sancionable'
+        missatge = "No sancionable"
     elif velocitat_real <= v_max * 1.1:
-        missatge = 'Marge de seguretat'
+        missatge = "Marge de seguretat"
     else:
-        missatge = 'Sancionable'
+        missatge = "Sancionable"
     
     return flask.jsonify({
         "velocitat_maxima": v_max,
         "velocitat_real": velocitat_real,
-        "sancionable": missatge
+        "sancionable": missatge 
     })
 
 if __name__ == "__main__":
