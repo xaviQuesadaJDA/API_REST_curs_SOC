@@ -133,9 +133,10 @@ class Persistencia_usuari_mysql():
 
 def main():
     nova_persistencia = Persistencia_usuari_mysql()
-    #nou_usuari = usuari.Usuari(nova_persistencia, "Adelaida", "Adi", "1234")
-    #print(nou_usuari.desa())
-    res = nova_persistencia.llegeix_amb_nick('Adi_2')
+    nou_usuari = usuari.Usuari(nova_persistencia, "Adelaida", "Adi", "1234")
+    print(nou_usuari.desa())
+    res = nova_persistencia.llegeix_amb_nick('Adi')
+    print(res)
 
 
 if __name__=="__main__":

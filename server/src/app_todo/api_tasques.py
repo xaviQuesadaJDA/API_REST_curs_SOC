@@ -19,15 +19,9 @@ def delete_task(id):
 @app.route("/tasks", methods=["POST", "GET", "PUT"])
 def tasks():
     if flask.request.method == "POST":
-        x_api_key = None
-        if 'x-api-key' in flask.request.headers:
-            x_api_key = flask.request.headers['x-api-key']
-        else:
-            return "", 403
-        usuari_autoritzat = core_app.llegeix_usuari_amb_api_key(x_api_key)
+        usuari_autoritzat = get_usuari_from_api_key()
         if not usuari_autoritzat:
             return "", 403
-
         # info_body = '{"title": "hola"}' -> str
         info_body = flask.request.get_data()
         # tasca_nova = {"title": "hola"}  -> dictionary
@@ -89,6 +83,16 @@ def login():
         return flask.jsonify({"api_key": resultat}), 201
     return "", 403
 
+def get_usuari_from_api_key():
+    x_api_key = None
+    if 'x-api-key' in flask.request.headers:
+        x_api_key = flask.request.headers['x-api-key']
+    else:
+        return None
+    usuari_autoritzat = core_app.llegeix_usuari_amb_api_key(x_api_key)
+    if not usuari_autoritzat:
+        return None
+    return usuari_autoritzat
 
 app.run(
     host="0.0.0.0",
